@@ -6,7 +6,7 @@ export function useIncrement() {
     // callback pour execute la fonction une fois incrementer
     const increment = function (callback = null) {
         i.value++
-        if (callback != null) {
+        if (typeof callback === "function") {
             callback(i);
         }
     };
@@ -18,11 +18,22 @@ export function useToDo() {
     const table = ref([])
     const [i, increment] = useIncrement();
 
-    const push = function (value) {
+    const push = function (value, callback = null) {
         increment((i) => {
             console.log(i);
             if (value != null) {
-                table.value.push({ id: i.value, content: value });
+                if (i.value <= 10) {
+                    var obj = { id: i.value, content: value };
+                    table.value.push(obj);
+                    if (typeof callback === "function") {
+                        callback(obj);
+                    }
+                }else{
+                    if (typeof callback === "function") {
+                        callback('error');
+                    }
+                }
+
             }
 
         })

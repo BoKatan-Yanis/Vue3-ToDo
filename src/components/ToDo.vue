@@ -1,12 +1,20 @@
 <template>
-<!-- compteur incrementer-->
+  <!-- compteur incrementer-->
   <p>Compteur : {{ i }}</p>
   <button @click="increment">{{ text }}</button>
   <br />
   <br />
   <!-- form d'ajout-->
   <input v-model="message" placeholder="modifiez-moi" />
-  <button @click="push(message)">Ajout d'un message</button>
+  <button
+    @click="
+      push(message, (status) => {
+        (status == 'error') ? (error = status) : (error = 'success');
+      })
+    "
+  >
+    Ajout d'un message
+  </button>
   <p>Le message est : {{ message }}</p>
   <!-- Boucle sur notre tableau renvoyer par la fonction composite -->
   <ul id="v-for-object" class="demo">
@@ -14,6 +22,9 @@
       {{ value }}
     </li>
   </ul>
+  <div class="success" v-if="error">
+    {{ error }}
+  </div>
 </template>
 
 <script >
@@ -23,6 +34,7 @@ export default {
   data() {
     return {
       message: "Null",
+      error: null,
     };
   },
   props: {
